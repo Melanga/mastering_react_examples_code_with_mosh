@@ -12,7 +12,17 @@ class Counters extends Component {
   };
 
   handleDelete = (counterId) => {
-    const counters = this.state.counters.filter((C) => C.id !== counterId);
+    const counters = this.state.counters.filter((c) => c.id !== counterId);
+    this.setState({ counters });
+  };
+
+  handleIncrement = (counter) => {
+    const counters = [...this.state.counters];
+    const index = counters.indexOf(counter);
+    // if we directly modify above spread counters, it will modify the object in the state directly without cloning it.
+    // thats why we add this line to clone another counters object in order to update the state.
+    counters[index] = { ...counter };
+    counters[index].value++;
     this.setState({ counters });
   };
 
@@ -36,6 +46,7 @@ class Counters extends Component {
         {this.state.counters.map((counter) => (
           <Counter
             key={counter.id}
+            onIncrement={this.handleIncrement}
             onDelete={this.handleDelete}
             counter={counter}
           />

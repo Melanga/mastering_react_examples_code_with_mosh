@@ -1,22 +1,12 @@
 import React, { Component } from "react";
 
 class Counter extends Component {
-  state = {
-    value: this.props.counter.value,
-  };
-
-  // arrow functions automatically refer to the current this without referring to window
-  handleIncrement = () => {
-    // console.log("clicked", this);
-    this.setState({ value: this.state.value + 1 });
-  };
-
   render() {
     return (
       <div>
         <span className={this.getBadgeStyleClass()}>{this.formatCount()}</span>
         <button
-          onClick={this.handleIncrement}
+          onClick={() => this.props.onIncrement(this.props.counter)}
           className="btn btn-secondary btn-sm"
         >
           Increment
@@ -33,12 +23,12 @@ class Counter extends Component {
 
   getBadgeStyleClass() {
     let badgeStyle = "badge m-2 bg-";
-    badgeStyle += this.state.value === 0 ? "warning" : "primary";
+    badgeStyle += this.props.counter.value === 0 ? "warning" : "primary";
     return badgeStyle;
   }
 
   formatCount() {
-    const { value: count } = this.state;
+    const { value: count } = this.props.counter;
     return count === 0 ? "Zero" : count;
   }
 }
